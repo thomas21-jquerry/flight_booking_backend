@@ -23,7 +23,7 @@ export class BookingsController {
 
   @Get()
   async findAll(@CurrentUser() user: any) {
-    return this.bookingsService.findAll();
+    return this.bookingsService.findAll(user.id);
   }
 
   @Get(':id')
@@ -67,5 +67,12 @@ export class BookingsController {
     @Body() bookingDto: createBookingDto,
   ) {
     return this.bookingsService.createBookingWithTickets(user.id, bookingDto.data, bookingDto.return_booked);
+  }
+
+  @Get('/tickets')
+  async findAllTickets( @CurrentUser() user: any,) {
+    // return true
+    console.log("here")
+    
   }
 } 

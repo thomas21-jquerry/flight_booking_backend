@@ -18,11 +18,11 @@ interface TicketRequest {
 export class BookingsService {
   constructor(private supabaseService: SupabaseService) {}
 
-  async findAll() {
+  async findAll(userId: string) {
     const { data, error } = await this.supabaseService.client
       .from('bookings')
-      .select('*, flights(*)');
-    
+      .select('*, flights!bookings_flight_id_fkey(*)')
+      .eq('user_id', userId);
     if (error) throw error;
     return data;
   }
@@ -81,7 +81,7 @@ export class BookingsService {
   async createBookingWithTickets(
     userId: string,
     ticketsData: TicketRequest[],
-    return_booked: boolean,
+    return_booked: boolean
   ) {
     if (ticketsData.length === 0) {
       throw new BadRequestException('No tickets provided');
@@ -98,6 +98,7 @@ export class BookingsService {
     let totalPrice = 0;
     const ticketsToInsert: TicketInsert[] = [];
     let flight;
+
     for (const [flightId, tickets] of flightsMap.entries()) {
       // Get flight details
       const { data: flight1, error: flightError } = await this.supabaseService.client
@@ -106,21 +107,26 @@ export class BookingsService {
         .eq('id', flightId)
         .single();
       if (flightError || !flight1) {
+
         throw new NotFoundException(`Flight ${flightId} not found`);
       }
+
       flight = flight1
       // Check available seats for each seat class
       const seatCount: Record<string, number> = {};
       for (const ticket of tickets) {
         seatCount[ticket.seat_class] = (seatCount[ticket.seat_class] || 0) + 1;
       }
+
       for (const [seatClass, count] of Object.entries(seatCount)) {
+
         if (flight[`${seatClass}_available`] < count) {
           throw new BadRequestException(
             `Not enough ${seatClass} seats available on flight ${flightId}`
           );
         }
       }
+
       // Calculate total price & prepare tickets
       for (const ticket of tickets) {
         const pricePerTicket = flight[`${ticket.seat_class}_price`];
@@ -141,7 +147,7 @@ export class BookingsService {
     const bookingInsert: BookingInsert = {
       user_id: userId,
       flight_id: ticketsData[0].flight_id, // Assuming one booking per flight
-      return_flight_id: ticketsData[ticketsData.length - 1].flight_id,
+      return_flight_id: return_booked ? ticketsData[ticketsData.length - 1].flight_id : null,
       passenger_name: ticketsData.map(t => t.passenger_name).join(', '),
       total_tickets: ticketsData.length,
       total_price_paid: totalPrice,
@@ -195,6 +201,25 @@ export class BookingsService {
       tickets: ticketsToInsert,
       message: 'Booking and tickets created successfully',
     };
+  }
+
+  async getAllTickets(userId: string) {
+    const { data, error } = await this.supabaseService.client
+      .from('bookings')
+      .select(`
+        *,
+        tickets(*),
+        flights_outbound:flights!bookings_flight_id_fkey(*),
+        flights_return:flights!bookings_return_flight_id_fkey(*)
+      `)
+      .eq('user_id', userId);
+  
+    if (error) {
+      console.error('Error fetching bookings with tickets:', error.message, error.details);
+      throw error;
+    }
+  
+    return data;
   }
 
 }
