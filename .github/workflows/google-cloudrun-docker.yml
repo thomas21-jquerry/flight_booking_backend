@@ -39,7 +39,7 @@ env:
   PROJECT_ID: 'hack-night-385117' # TODO: update to your Google Cloud project ID
   REGION: 'us-central1' # TODO: update to your region
   SERVICE: 'flight-booking-backend' # TODO: update to your service name
-  WORKLOAD_IDENTITY_PROVIDER: 'projects/173252491535/locations/global/workloadIdentityPools/github/providers/flight-booking-backend' # TODO: update to your workload identity provider
+  WORKLOAD_IDENTITY_PROVIDER: 'projects/33339582454/locations/global/workloadIdentityPools/actions-pool-1/providers/flight-booking-backend' # TODO: update to your workload identity provider
 
 jobs:
   deploy:
