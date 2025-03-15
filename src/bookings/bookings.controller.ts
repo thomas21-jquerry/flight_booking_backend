@@ -6,6 +6,15 @@ import { CurrentUser } from '../auth/auth.decorator';
 
 type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
 type BookingUpdate = Database['public']['Tables']['bookings']['Update'];
+interface TicketRequest {
+  flight_id: string;
+  passenger_name: string;
+  seat_class: 'economy' | 'premium' | 'business' | 'first_class';
+}
+interface createBookingDto {
+  data: TicketRequest[];
+  return_booked: boolean;
+}
 
 @Controller('bookings')
 @UseGuards(AuthGuard)
@@ -50,5 +59,13 @@ export class BookingsController {
   @Delete(':id')
   async remove(@Param('id') id: string, @CurrentUser() user: any) {
     return this.bookingsService.remove(id);
+  }
+
+  @Post('/create')
+  async createBookingWithTickets(
+    @CurrentUser() user: any,
+    @Body() bookingDto: createBookingDto,
+  ) {
+    return this.bookingsService.createBookingWithTickets(user.id, bookingDto.data, bookingDto.return_booked);
   }
 } 

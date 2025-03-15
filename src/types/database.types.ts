@@ -19,8 +19,10 @@ export interface Database {
           departure_time: string
           arrival_time: string
           duration: string
-          price: number
-          available_seats: number
+          economy_price: number
+          premium_price: number
+          business_price: number
+          first_class_price: number
           created_at: string
         }
         Insert: {
@@ -32,8 +34,10 @@ export interface Database {
           departure_time: string
           arrival_time: string
           duration: string
-          price: number
-          available_seats: number
+          economy_price?: number
+          premium_price?: number
+          business_price?: number
+          first_class_price?: number
           created_at?: string
         }
         Update: {
@@ -45,8 +49,10 @@ export interface Database {
           departure_time?: string
           arrival_time?: string
           duration?: string
-          price?: number
-          available_seats?: number
+          economy_price?: number
+          premium_price?: number
+          business_price?: number
+          first_class_price?: number
           created_at?: string
         }
       }
@@ -57,6 +63,8 @@ export interface Database {
           flight_id: string
           return_flight_id: string | null
           passenger_name: string
+          total_tickets: number
+          total_price_paid: number
           created_at: string
         }
         Insert: {
@@ -65,6 +73,8 @@ export interface Database {
           flight_id: string
           return_flight_id?: string | null
           passenger_name: string
+          total_tickets?: number
+          total_price_paid?: number
           created_at?: string
         }
         Update: {
@@ -73,9 +83,43 @@ export interface Database {
           flight_id?: string
           return_flight_id?: string | null
           passenger_name?: string
+          total_tickets?: number
+          total_price_paid?: number
+          created_at?: string
+        }
+      }
+      tickets: {
+        Row: {
+          id: string
+          booking_id: string
+          flight_id: string
+          passenger_name: string
+          seat_class: 'economy' | 'premium' | 'business' | 'first_class'
+          seat_number: string | null
+          price: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          booking_id: string
+          flight_id: string
+          passenger_name: string
+          seat_class: 'economy' | 'premium' | 'business' | 'first_class'
+          seat_number?: string | null
+          price: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          booking_id?: string
+          flight_id?: string
+          passenger_name?: string
+          seat_class?: 'economy' | 'premium' | 'business' | 'first_class'
+          seat_number?: string | null
+          price?: number
           created_at?: string
         }
       }
     }
   }
-} 
+}

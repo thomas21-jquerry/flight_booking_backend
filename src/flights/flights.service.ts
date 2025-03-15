@@ -38,13 +38,15 @@ export class FlightsService {
   // console.log({ startOfDay, endOfDay }); // Debugging
 
   const { data, error } = await this.supabaseService.client
-    .from('flights')
-    .select('*')
-    .eq('origin', origin)
-    .eq('destination', destination)
-    .gte('departure_time', startOfDay)
-    .lte('departure_time', endOfDay)
-    .gt('available_seats', 0);
+  .from('flights')
+  .select('*')
+  .eq('origin', origin)
+  .eq('destination', destination)
+  .gte('departure_time', startOfDay)
+  .lte('departure_time', endOfDay)
+  .or(
+    'economy_seats.gt.0, premium_seats.gt.0, business_seats.gt.0, first_class_seats.gt.0'
+  );
     
     if (error) throw error;
     return data;

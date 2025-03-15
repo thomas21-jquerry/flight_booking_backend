@@ -20,6 +20,7 @@ import { UserProfile } from '../types/user.types';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(AuthGuard)
   @Post('profile')
   @HttpCode(HttpStatus.CREATED)
   async createProfile(
@@ -30,6 +31,7 @@ export class UsersController {
     return this.usersService.createProfile(userId.id, createProfileDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get('profile')
   async getProfile(
     @CurrentUser() userId: any
@@ -38,6 +40,7 @@ export class UsersController {
     return this.usersService.getProfile(userId.id);
   }
 
+  @UseGuards(AuthGuard)
   @Put('profile')
   async updateProfile(
     @CurrentUser() userId: any,
@@ -46,6 +49,7 @@ export class UsersController {
     return this.usersService.updateProfile(userId.id, updateData);
   }
 
+  @UseGuards(AuthGuard)
   @Delete('profile')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteProfile(

@@ -11,7 +11,10 @@ export class FlightResponseDto implements FlightRow {
   departure_time: string;
   arrival_time: string;
   duration: string;
-  price: number;
+  economy_price: number;
+  premium_price: number;
+  business_price: number;
+  first_class_price: number;
   available_seats: number;
   created_at: string;
 } 
