@@ -36,6 +36,8 @@ Tech stack Used:
 6. vercel
 7. cloudrun(GCP)
 
+for more info: https://github.com/thomas21-jquerry/flight_booking_backend/edit/main/systemDesign.md
+
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Project setup
