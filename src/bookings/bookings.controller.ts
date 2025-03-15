@@ -75,4 +75,12 @@ export class BookingsController {
     console.log("here")
     
   }
+
+  @Patch('tickets/:id/status')
+  async updateTicketStatus(
+    @Param('id') id: string,
+    // @Body('active') active: boolean
+  ) {
+    return this.bookingsService.updateTicketStatus(id);
+  }
 } 

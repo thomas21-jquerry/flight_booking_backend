@@ -8,10 +8,9 @@ export class UsersService {
   constructor(private readonly supabaseService: SupabaseService) {}
 
   async createProfile(userId: string, createProfileDto: CreateProfileDto): Promise<UserProfile> {
-    const { data, error } = await this.supabaseService
-      .client
+    const { data, error } = await this.supabaseService.client
       .from('profiles')
-      .insert([{ user_id: userId, ...createProfileDto }])
+      .upsert([{ user_id: userId, ...createProfileDto }], { onConflict: 'user_id' })
       .select()
       .single();
 

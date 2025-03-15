@@ -100,6 +100,7 @@ export class BookingsService {
     }
 
     // Group tickets by flight_id
+    console.log("ticketsData", ticketsData);
     const flightsMap = new Map<string, TicketRequest[]>();
     for (const ticket of ticketsData) {
       if (!flightsMap.has(ticket.flight_id)) {
@@ -233,6 +234,55 @@ export class BookingsService {
   
     return data;
   }
+
+  async updateTicketStatus(ticketId: string) {
+    // Get ticket and booking details first
+    const { data: ticket, error: findError } = await this.supabaseService.client
+      .from('tickets')
+      .select('*, bookings(*)')
+      .eq('id', ticketId)
+      .single();
+
+    if (findError) throw findError;
+    if (!ticket) throw new NotFoundException('Ticket not found');
+
+    // Update ticket status
+    const { error: ticketError } = await this.supabaseService.client
+      .from('tickets')
+      .update({ active: false })
+      .eq('id', ticketId);
+
+    if (ticketError) throw ticketError;
+
+    // Get remaining active tickets for this booking
+    const { data: activeTickets, error: activeTicketsError } = await this.supabaseService.client
+      .from('tickets')
+      .select('passenger_name')
+      .eq('booking_id', ticket.booking_id)
+      .eq('active', true);
+
+    if (activeTicketsError) throw activeTicketsError;
+
+    // Update booking with new total_tickets and passenger_names
+    const { data: updatedBooking, error: bookingError } = await this.supabaseService.client
+      .from('bookings')
+      .update({
+        total_tickets: activeTickets.length,
+        passenger_name: activeTickets.map(t => t.passenger_name).join(', ')
+      })
+      .eq('id', ticket.booking_id)
+      .select()
+      .single();
+
+    if (bookingError) throw bookingError;
+
+    return {
+      ticket,
+      booking: updatedBooking,
+      message: 'Ticket deactivated and booking updated successfully'
+    };
+  }
+
 
 }
 
