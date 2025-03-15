@@ -14,7 +14,7 @@ async function bootstrap() {
   const corsOptions = {
     origin: nodeEnv === 'production' 
       ? frontendUrl // In production, only allow the specified frontend URL
-      : ['flight-booking-frontend-pi.vercel.app', 'https://flight-booking-frontend-thomas-joses-projects.vercel.app/',frontendUrl], // In development, allow both localhost and specified URL
+      : ['https://flight-booking-frontend-pi.vercel.app', 'https://flight-booking-frontend-thomas-joses-projects.vercel.app', 'http://localhost:3000', frontendUrl], // In development, allow both localhost and specified URL
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
   };
