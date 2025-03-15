@@ -33,7 +33,7 @@ COPY --from=builder /usr/src/app/dist ./dist
 ENV NODE_ENV=production
 
 # Expose port
-EXPOSE 3001
+EXPOSE 3000
 
 # Start the app
 CMD ["npm", "run", "start:prod"] 

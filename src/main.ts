@@ -8,13 +8,13 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT', 3000);
   const nodeEnv = configService.get<string>('NODE_ENV', 'development');
-  const frontendUrl = configService.get<string>('FRONTEND_URL', 'http://localhost:3000');
+  const frontendUrl = configService.get<string>('FRONTEND_URL', 'flight-booking-frontend-pi.vercel.app');
 
   // CORS configuration based on environment
   const corsOptions = {
     origin: nodeEnv === 'production' 
       ? frontendUrl // In production, only allow the specified frontend URL
-      : ['http://localhost:3000', frontendUrl], // In development, allow both localhost and specified URL
+      : ['flight-booking-frontend-pi.vercel.app', 'https://flight-booking-frontend-thomas-joses-projects.vercel.app/',frontendUrl], // In development, allow both localhost and specified URL
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
   };
