@@ -18,14 +18,26 @@ interface TicketRequest {
 export class BookingsService {
   constructor(private supabaseService: SupabaseService) {}
 
-  async findAll(userId: string) {
-    const { data, error } = await this.supabaseService.client
+  async findAll(userId: string, page: number = 1, limit: number = 10) {
+    const start = (page - 1) * limit;
+    const end = start + limit - 1;
+
+    const { data, error, count } = await this.supabaseService.client
       .from('bookings')
-      .select('*, flights!bookings_flight_id_fkey(*)')
-      .eq('user_id', userId);
+      .select('*, flights!bookings_flight_id_fkey(*), tickets(*)', { count: 'exact' }) // Get total count
+      .eq('user_id', userId)
+      .range(start, end); // Apply pagination
+
     if (error) throw error;
-    return data;
-  }
+
+    return {
+        data,
+        total: count || 0,
+        page,
+        totalPages: Math.ceil((count || 0) / limit),
+    };
+}
+
 
   async findOne(id: string) {
     const { data, error } = await this.supabaseService.client
