@@ -10,6 +10,8 @@ The design focuses on scalability, reliability, and user experience, supporting 
 ## System Architecture
 The system follows a client-server architecture with the following components:
 
+![System Design](./system.png)
+
 ### 1. **Frontend**
 - **Framework**: Next.js (App Router)
 - **Features**:
