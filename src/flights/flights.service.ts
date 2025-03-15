@@ -4,6 +4,7 @@ import { Database } from '../types/database.types';
 import { CreateFlightDto } from './dto/create-flight.dto';
 import { UpdateFlightDto } from './dto/update-flight.dto';
 import { FlightResponseDto } from './dto/flight-response.dto';
+import { SearchFlightsDto } from './dto/search-flights.dto';
 
 @Injectable()
 export class FlightsService {
@@ -24,6 +25,26 @@ export class FlightsService {
       .select('*')
       .eq('id', id)
       .single();
+    
+    if (error) throw error;
+    return data;
+  }
+
+  async searchFlights(searchDto: SearchFlightsDto): Promise<FlightResponseDto[]> {
+    const { origin, destination, date } = searchDto;
+    const startOfDay = `${date} 00:00:00`;
+  const endOfDay = `${date} 23:59:59`;
+
+  // console.log({ startOfDay, endOfDay }); // Debugging
+
+  const { data, error } = await this.supabaseService.client
+    .from('flights')
+    .select('*')
+    .eq('origin', origin)
+    .eq('destination', destination)
+    .gte('departure_time', startOfDay)
+    .lte('departure_time', endOfDay)
+    .gt('available_seats', 0);
     
     if (error) throw error;
     return data;
