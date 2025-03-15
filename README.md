@@ -22,6 +22,19 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
+This is a flight booking management platform a user can come and book flights. It lets book return flight organises your flight tickets etc.
+This is the backend repo of the flight booking. The frontend of this project is https://github.com/thomas21-jquerry/flight_booking_frontend.
+
+The project is deployed here : https://flight-booking-frontend-pi.vercel.app/
+
+Tech stack Used:
+1. NestJs
+2. PostgresQl
+3. Docker
+4. NextJs
+5. supabase
+6. vercel
+7. cloudrun(GCP)
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
