@@ -81,4 +81,36 @@ export class FlightsService {
     
     if (error) throw error;
   }
+
+  async recommendation(searchDto: SearchFlightsDto): Promise<FlightResponseDto[]> {
+    try {
+      const { origin, destination, date } = searchDto;
+      
+      // Calculate the date range (2 days before and 2 days after)
+      const startDate = new Date(date);
+      startDate.setDate(startDate.getDate() - 5);
+      const startOfDay = startDate.toISOString().split('T')[0] + " 00:00:00";
+  
+      const endDate = new Date(date);
+      endDate.setDate(endDate.getDate() + 5);
+      const endOfDay = endDate.toISOString().split('T')[0] + " 23:59:59";
+  
+      const { data, error } = await this.supabaseService.client
+        .from('flights')
+        .select('*')
+        .eq('origin', origin)
+        .eq('destination', destination)
+        .gte('departure_time', startOfDay)
+        .lte('departure_time', endOfDay)
+        .or('economy_seats.gt.0, premium_seats.gt.0, business_seats.gt.0, first_class_seats.gt.0');
+  
+      if (error) throw error;
+      
+      return data;
+    } catch (err) {
+      return [];
+    }
+  };
+  
+
 } 
