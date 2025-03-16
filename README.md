@@ -25,8 +25,8 @@
 This is a flight booking management platform a user can come and book flights. It lets book return flight organises your flight tickets etc.
 This is the backend repo of the flight booking. The frontend of this project is https://github.com/thomas21-jquerry/flight_booking_frontend.
 
-The project is deployed here : https://flight-booking-frontend-pi.vercel.app/
-System design Doc: https://github.com/thomas21-jquerry/flight_booking_backend/blob/main/systemDesign.md
+The project is deployed here : https://flight-booking-frontend-pi.vercel.app/ <br>
+System design Doc: https://github.com/thomas21-jquerry/flight_booking_backend/blob/main/systemDesign.md <br>
 Deployment doc: https://github.com/thomas21-jquerry/flight_booking_backend/blob/main/deploymentDoc.md
 
 Tech stack Used:
