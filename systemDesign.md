@@ -1,5 +1,9 @@
 # Flight Booking System Design
 
+Deployed: https://flight-booking-frontend-pi.vercel.app/
+<br>
+API Doc (swagger) : https://flight-booking-backend-dn12.onrender.com/api/docs
+
 ## Overview
 This document outlines the system design for a flight booking application built using a modern tech stack. The system allows users to search for flights, book tickets, and manage their bookings. It leverages a relational database (Supabase/PostgreSQL) for data persistence, a Next.js frontend for the user interface, and a RESTful API for communication between components.
 
