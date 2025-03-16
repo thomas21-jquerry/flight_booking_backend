@@ -56,4 +56,8 @@ export class UsersService {
 
     if (error) throw error;
   }
+
+  async sendEmail(userId: string): Promise<void> {
+   
+  }
 } 
