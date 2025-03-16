@@ -1,4 +1,4 @@
-To deploy your Next.js frontend (e.g., the `page.tsx` code you provided) to Vercel, you’ll need to follow a straightforward process. Vercel is optimized for Next.js applications, making deployment simple. Below is a step-by-step guide to prepare and deploy your project to Vercel, assuming your backend (NestJS) is hosted separately (e.g., on another service like Render, Heroku, or a VPS). If your backend is also part of the same repository, let me know, and I’ll adjust the instructions accordingly.
+To deploy your Next.js frontend (e.g., the `page.tsx` code you provided) to Vercel, you’ll need to follow a straightforward process. Vercel is optimized for Next.js applications, making deployment simple. Below is a step-by-step guide to prepare and deploy your project to Vercel, assuming your backend (NestJS) is hosted separately (e.g., on another service like Render, Heroku, or a VPS). If your backend is also part of the same repository
 
 ---
 
@@ -221,8 +221,4 @@ Add this to your project’s `README.md` for reference:
 
 ---
 
-### Notes
-- **Backend Deployment**: If you need help deploying your NestJS backend (e.g., to Render), let me know, and I’ll provide a separate guide.
-- **Domain**: Vercel provides a free `.vercel.app` domain, or you can add a custom domain in the dashboard.
 
-Replace your `page.tsx` with the latest version from our previous messages, push to GitHub, and follow these steps. Your app should be live on Vercel shortly! Let me know if you hit any snags.
