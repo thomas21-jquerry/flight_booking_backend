@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException, NotFoundException  } from '@nestjs/common';
 import { SupabaseService } from '../services/supabase.service';
 import { Database } from '../types/database.types';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 type Booking = Database['public']['Tables']['bookings']['Row'];
 type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
@@ -16,11 +17,11 @@ interface TicketRequest {
 
 @Injectable()
 export class BookingsService {
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(private supabaseService: SupabaseService, private readonly eventEmitter: EventEmitter2) {}
 
   async findAll(userId: string, page: number = 1, limit: number = 100) {
     const start = (page - 1) * limit;
-    const end = start + limit - 1;
+    const end = Number(start) + Number(limit) - 1;
     const { data, error, count } = await this.supabaseService.client
       .from('bookings')
       .select('*, flights!bookings_flight_id_fkey(*), tickets(*)', { count: 'exact' }) // Get total count
@@ -99,7 +100,7 @@ export class BookingsService {
     }
 
     // Group tickets by flight_id
-    console.log("ticketsData", ticketsData);
+
     const flightsMap = new Map<string, TicketRequest[]>();
     for (const ticket of ticketsData) {
       if (!flightsMap.has(ticket.flight_id)) {
@@ -207,6 +208,11 @@ export class BookingsService {
         throw new BadRequestException('Failed to update available seats');
       }
     }
+    this.eventEmitter.emit('booking_confirmed', {
+      booking_id: booking.id,
+      status: 'confirmed',
+      user_id: userId,
+    });
 
     return {
       booking,
