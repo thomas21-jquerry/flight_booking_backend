@@ -18,10 +18,9 @@ interface TicketRequest {
 export class BookingsService {
   constructor(private supabaseService: SupabaseService) {}
 
-  async findAll(userId: string, page: number = 1, limit: number = 10) {
+  async findAll(userId: string, page: number = 1, limit: number = 100) {
     const start = (page - 1) * limit;
     const end = start + limit - 1;
-
     const { data, error, count } = await this.supabaseService.client
       .from('bookings')
       .select('*, flights!bookings_flight_id_fkey(*), tickets(*)', { count: 'exact' }) // Get total count

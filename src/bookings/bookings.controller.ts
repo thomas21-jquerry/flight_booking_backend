@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
 import { Database } from '../types/database.types';
 import { AuthGuard } from '../auth/auth.guard';
@@ -22,8 +22,10 @@ export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) {}
 
   @Get()
-  async findAll(@CurrentUser() user: any) {
-    return this.bookingsService.findAll(user.id);
+  async findAll(@CurrentUser() user: any,
+  @Query('page') page = 1,
+  @Query('limit') limit = 100,) {
+    return this.bookingsService.findAll(user.id, page, limit);
   }
 
   @Get(':id')

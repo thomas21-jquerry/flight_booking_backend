@@ -16,6 +16,11 @@ export class FlightsController {
     return this.flightsService.findAll();
   }
 
+  @Get('recommend')
+  async recommendFlights(@Query() searchDto: SearchFlightsDto): Promise<FlightResponseDto[]> {
+    return this.flightsService.recommendation(searchDto);
+  }
+
   @Get('search')
   async searchFlights(@Query() searchDto: SearchFlightsDto): Promise<FlightResponseDto[]> {
     return this.flightsService.searchFlights(searchDto);
